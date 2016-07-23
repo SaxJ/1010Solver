@@ -2,10 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Piece {
-  bool grid[5][5];
-} Piece;
+#define PIECE_SIZE 5
+#define NUM_PIECES 16
 
-void makePieceList(Piece* array);
-void printPiece(Piece* piece);
-void printPieceArray(Piece* pieceList, int length);
+typedef int[5][5] Piece;
+
+void printPiece(const int piece[5][5]);
