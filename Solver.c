@@ -182,6 +182,24 @@ void displayPieces(const Piece *pieces, int length) {
   }
 }
 
+void prettyPrintPieces(const Piece *pieces) {
+    for (int y = 0; y < PIECE_SIZE; y++) {
+        for (int p = 0; p < NUM_PIECES; p++) {
+            for (int x = 0; x < PIECE_SIZE; x++) {
+                if (pieces[p].grid[x][y] == 1)
+                    printf("x");
+                else
+                    printf(" ");
+            }
+            if (y == 0)
+                printf("%-2d|  ", p);
+            else
+                printf("  |  ");
+        }
+        printf("\n");
+    }
+}
+
 int main(int argc, char **argv) {
-  displayPieces(PIECES, NUM_PIECES);
+  prettyPrintPieces(PIECES);
 }

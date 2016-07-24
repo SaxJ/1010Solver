@@ -12,3 +12,4 @@ typedef struct Piece {
 
 void printPiece(Piece piece);
 void displayPieces(const Piece *pieces, int length);
+void prettyPrintPieces(const Piece *pieces);
