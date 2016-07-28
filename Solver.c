@@ -8,7 +8,9 @@ static const Piece PIECES[16] = {
       {0},
       {0},
       {0}
-    }
+    },
+    2,
+    2
   },
 
   {
@@ -18,7 +20,9 @@ static const Piece PIECES[16] = {
       {0},
       {0},
       {0}
-    }
+    },
+    2,
+    2
   },
 
   {
@@ -28,7 +32,9 @@ static const Piece PIECES[16] = {
       {0},
       {0},
       {0}
-    }
+    },
+    2,
+    2
   },
 
   {
@@ -38,7 +44,9 @@ static const Piece PIECES[16] = {
       {0},
       {0},
       {0}
-    }
+    },
+    2,
+    2
   },
 
   {
@@ -48,7 +56,9 @@ static const Piece PIECES[16] = {
       {0},
       {0},
       {0}
-    }
+    },
+    3,
+    1
   },
 
   {
@@ -58,7 +68,9 @@ static const Piece PIECES[16] = {
       {1,0,0,0,0},
       {0},
       {0}
-    }
+    },
+    1,
+    3
   },
 
   {
@@ -68,7 +80,9 @@ static const Piece PIECES[16] = {
       {0,0,0,0,0},
       {0},
       {0}
-    }
+    },
+    2,
+    2
   },
 
   {
@@ -78,7 +92,9 @@ static const Piece PIECES[16] = {
       {1,0,0,0,0},
       {1,0,0,0,0},
       {0,0,0,0,0}
-    }
+    },
+    1,
+    4
   },
 
   {
@@ -88,7 +104,9 @@ static const Piece PIECES[16] = {
       {0,0,0,0,0},
       {0},
       {0}
-    }
+    },
+    4,
+    1
   },
 
   {
@@ -98,7 +116,9 @@ static const Piece PIECES[16] = {
       {1,0,0,0,0},
       {0,0,0,0,0},
       {0,0,0,0,0}
-    }
+    },
+    3,
+    3
   },
 
   {
@@ -108,7 +128,9 @@ static const Piece PIECES[16] = {
       {1,1,1,0,0},
       {0,0,0,0,0},
       {0,0,0,0,0}
-    }
+    },
+    3,
+    3
   },
 
   {
@@ -118,7 +140,9 @@ static const Piece PIECES[16] = {
       {1,1,1,0,0},
       {0,0,0,0,0},
       {0,0,0,0,0}
-    }
+    },
+    3,
+    3
   },
 
   {
@@ -128,7 +152,9 @@ static const Piece PIECES[16] = {
       {0,0,1,0,0},
       {0,0,0,0,0},
       {0,0,0,0,0}
-    }
+    },
+    3,
+    3
   },
 
   {
@@ -138,7 +164,9 @@ static const Piece PIECES[16] = {
       {1,1,1,0,0},
       {0,0,0,0,0},
       {0,0,0,0,0}
-    }
+    },
+    3,
+    3
   },
 
   {
@@ -148,7 +176,9 @@ static const Piece PIECES[16] = {
       {1,0,0,0,0},
       {1,0,0,0,0},
       {1,0,0,0,0}
-    }
+    },
+    1,
+    5
   },
 
   {
@@ -158,7 +188,9 @@ static const Piece PIECES[16] = {
       {0,0,0,0,0},
       {0,0,0,0,0},
       {0,0,0,0,0}
-    }
+    },
+    5,
+    1
   }
 };
 
@@ -197,6 +229,14 @@ void prettyPrintPieces(const Piece *pieces) {
                 printf("  |  ");
         }
         printf("\n");
+    }
+}
+
+void clearBoard(Board *board) {
+    for (int x = 0; x < BOARD_SIZE; x++) {
+        for (int y = 0; y < BOARD_SIZE; y++) {
+            board->grid[x][y] = 0;
+        }
     }
 }
 
