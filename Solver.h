@@ -4,7 +4,11 @@
 
 #define PIECE_SIZE 5
 #define NUM_PIECES 16
+#define ROW_WIDTH 3
 
-typedef int[5][5] Piece;
+typedef struct Piece {
+  int grid[5][5];
+} Piece;
 
-void printPiece(const int piece[5][5]);
+void printPiece(Piece piece);
+void displayPieces(const Piece *pieces, int length);
