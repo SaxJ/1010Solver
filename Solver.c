@@ -1,5 +1,8 @@
 #include "Solver.h"
 
+/*
+A list of possible pieces.
+*/
 static const Piece PIECES[16] = {
   {
     {
@@ -194,6 +197,9 @@ static const Piece PIECES[16] = {
   }
 };
 
+/**
+ * Prints the piece to stdout.
+*/
 void printPiece(Piece piece) {
   for (int y = 0; y < PIECE_SIZE; y++) {
     for (int x = 0; x < PIECE_SIZE; x++) {
@@ -238,6 +244,30 @@ void clearBoard(Board *board) {
             board->grid[x][y] = 0;
         }
     }
+}
+
+void copyBoard(Board *from, Board *to) {
+    for (int x = 0; x < BOARD_SIZE; x++) {
+        for (int y = 0; y < BOARD_SIZE; y++) {
+            to->grid[x][y] = from->grid[x][y];
+        }
+    }
+}
+
+int placePiece(Board *board, Board *nextBoard, Piece piece, Point pos) {
+    copyBoard(board, nextBoard);
+    for (int x = 0; x < PIECE_SIZE; x++) {
+        for (int y = 0; y < PIECE_SIZE; y++) {
+            int xp = pos.x + x;
+            int yp = pos.y + y;
+            if (xp < BOARD_SIZE && yp < BOARD_SIZE)
+                nextBoard->grid[xp][yp] += piece.grid[x][y];
+            
+            if (nextBoard->grid[xp][yp] > 1)
+                return -1;
+        }
+    }
+    return 0;
 }
 
 int main(int argc, char **argv) {
