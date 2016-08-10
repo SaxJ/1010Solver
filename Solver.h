@@ -28,3 +28,4 @@ int placePiece(Board *board, Board *nextBoard, int piece, Point *pos);
 void copyBoard(Board *from, Board *to);
 void printBoard(Board *board);
 int countBoardScore(Board *board);
+int getPiecePlacements(Board *board, int pieceId, Point *positions)

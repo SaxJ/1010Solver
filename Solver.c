@@ -308,6 +308,32 @@ int countBoardScore(Board *board) {
     return score;
 }
 
+/**
+ * Populates the array of Points with the possible positions that the piece can be places.
+ * Returns the numbers of possible positions.
+ */
+int getPiecePlacements(Board *board, int pieceId, Point *positions) {
+    Piece piece = PIECES[pieceId];
+    for (int x = 0; x < BOARD_SIZE - piece.width; x++) {
+        for (int y = 0; y < BOARD_SIZE - piece.height; y++) {
+            bool invalid = false;
+            
+            for (int w = 0; w < piece.width && !invalid; w++) {
+                for (int h = 0; h < piece.height; h++) {
+                    if (board->grid[x + w][y + h] > 0) {
+                        invalid = true;
+                        break;
+                    }
+                }
+            }
+            
+            if (!invalid) {
+                // add a valid position
+            }
+        }
+    }
+}
+
 int main(int argc, char **argv) {
   prettyPrintPieces(PIECES);
   int selected, x, y;
