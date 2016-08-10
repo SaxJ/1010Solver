@@ -24,5 +24,7 @@ void printPiece(Piece piece);
 void displayPieces(const Piece *pieces, int length);
 void prettyPrintPieces(const Piece *pieces);
 void clearBoard(Board *board);
-int placePiece(Board *board, Board *nextBoard, Piece piece, Point pos);
+int placePiece(Board *board, Board *nextBoard, int piece, Point *pos);
 void copyBoard(Board *from, Board *to);
+void printBoard(Board *board);
+int countBoardScore(Board *board);

@@ -254,12 +254,13 @@ void copyBoard(Board *from, Board *to) {
     }
 }
 
-int placePiece(Board *board, Board *nextBoard, Piece piece, Point pos) {
+int placePiece(Board *board, Board *nextBoard, int pieceNumber, Point *pos) {
     copyBoard(board, nextBoard);
+    Piece piece = PIECES[pieceNumber % NUM_PIECES];
     for (int x = 0; x < PIECE_SIZE; x++) {
         for (int y = 0; y < PIECE_SIZE; y++) {
-            int xp = pos.x + x;
-            int yp = pos.y + y;
+            int xp = pos->x + x;
+            int yp = pos->y + y;
             if (xp < BOARD_SIZE && yp < BOARD_SIZE)
                 nextBoard->grid[xp][yp] += piece.grid[x][y];
             
@@ -270,6 +271,50 @@ int placePiece(Board *board, Board *nextBoard, Piece piece, Point pos) {
     return 0;
 }
 
+void printBoard(Board *board) {
+    for (int y = 0; y < BOARD_SIZE; y++) {
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            printf("%d ", board->grid[x][y]);
+        }
+        printf("\n");
+    }
+    printf("=============\n");
+}
+
+int countBoardScore(Board *board) {
+    int score = 0;
+    for (int x = 0; x < BOARD_SIZE; x++) {
+        bool full = true;
+        for (int y = 0; y < BOARD_SIZE; y++) {
+            if (board->grid[x][y] == 0) {
+                full = false;
+                break;
+            }
+        }
+        if (full) score++;
+    }
+    
+    for (int y = 0; y < BOARD_SIZE; y++) {
+        bool full = true;
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            if (board->grid[x][y] == 0) {
+                full = false;
+                break;
+            }
+        }
+        if (full) score++;
+    }
+    
+    return score;
+}
+
 int main(int argc, char **argv) {
   prettyPrintPieces(PIECES);
+  int selected, x, y;
+  Board a, b;
+  clearBoard(&a); clearBoard(&b);
+  
+  Point p = {0};
+  placePiece(&a, &b, 0, &p);
+  printBoard(&b);
 }
