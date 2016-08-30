@@ -314,6 +314,8 @@ int countBoardScore(Board *board) {
  */
 int getPiecePlacements(Board *board, int pieceId, Point *positions) {
     Piece piece = PIECES[pieceId];
+    int numPositions = 0;
+
     for (int x = 0; x < BOARD_SIZE - piece.width; x++) {
         for (int y = 0; y < BOARD_SIZE - piece.height; y++) {
             bool invalid = false;
@@ -328,10 +330,14 @@ int getPiecePlacements(Board *board, int pieceId, Point *positions) {
             }
             
             if (!invalid) {
-                // add a valid position
+                numPositions++;
+                positions[numPositions - 1].x = x;
+                positions[numPositions - 1].y = y;
             }
         }
     }
+    
+    return numPositions;
 }
 
 int main(int argc, char **argv) {
@@ -343,4 +349,8 @@ int main(int argc, char **argv) {
   Point p = {0};
   placePiece(&a, &b, 0, &p);
   printBoard(&b);
+  
+  Point positions[100] = {0};
+  int sz = getPiecePlacements(&b, 13, positions);
+  printf("Can place peice 13 in %d positions.\n", sz);
 }
