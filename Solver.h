@@ -7,6 +7,7 @@
 #define ROW_WIDTH 3
 #define BOARD_SIZE 10
 #define TURN_SIZE 3
+#define PIECE_SET_SIZE 3
 
 typedef struct Piece {
     int grid[PIECE_SIZE][PIECE_SIZE];
@@ -30,6 +31,10 @@ typedef struct Move {
 typedef struct Turn {
     Move moves[TURN_SIZE];
 } Turn;
+
+typedef struct PieceSet {
+    Piece pieces[PIECE_SET_SIZE];
+} PieceSet;
 
 void printPiece(Piece piece);
 void displayPieces(const Piece *pieces, int length);
