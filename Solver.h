@@ -99,6 +99,11 @@ int countBoardScore(Board *board);
 int getPiecePlacements(Board *board, int pieceId, Point *positions);
 
 /**
+ * Gets the max scoring placement for a give board and piece.
+ */
+void getPiecePlacement(Board *board, int piece, Turn *turn)
+
+/**
  * Returns the score of a turn. The turn score is the sum of the scores of each move in a turn.
  * turn - The turn to score.
  */

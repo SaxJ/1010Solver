@@ -340,6 +340,48 @@ int getPiecePlacements(Board *board, int pieceId, Point *positions) {
     return numPositions;
 }
 
+void getPiecePlacement(Board *board, int piece, Move *move) {
+  Point positions[100];
+  Board next;
+  int maxScore = 0;
+  int bestPos = 0;
+  int nPositions = getPiecePlacements(board, piece, positions);
+  
+  for (int i = 0; i < nPositions; i++) {
+    placePiece(board, &next, piece, &positions[i]);
+    int score = countBoardScore(&next);
+    if (score > maxScore) {
+      maxScore = score;
+      bestPos = i;
+    }
+  }
+  
+  move->pieceId = piece;
+  move->position.x = positions[bestPos].x;
+  move->position.y = positions[bestPos].y;
+  move->score = maxScore;
+}
+
+void getPermutations(Board *startBoard, Turn *possibleTurns) {
+  int turnNumber = 0;
+  Board board = *startBoard;
+  Board nextBoard;
+  
+  for (int a = 0; a <=2; a++) {
+    for (int b = 0; b <= 2; b++) {
+      if (a == b) continue;
+      
+      for (int c = 0; c <= 2; c++) {
+        if (c == b || c == a) continue;
+        
+        
+        
+        
+      }
+    }
+  }
+}
+
 int main(int argc, char **argv) {
   prettyPrintPieces(PIECES);
   int selected, x, y;
