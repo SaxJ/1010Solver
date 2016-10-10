@@ -366,7 +366,7 @@ int executeMove(Board *board, Board *nextBoard, Move *move) {
     return placePiece(board, nextBoard, move->pieceId, &(move->position));
 }
 
-void getPermutations(Board *startBoard, const int *pieces, Turn *possibleTurns) {
+int getPermutations(Board *startBoard, int *pieces, Turn *possibleTurns) {
   int turnNumber = 0;
 
   Board board;
@@ -396,19 +396,82 @@ void getPermutations(Board *startBoard, const int *pieces, Turn *possibleTurns) 
       }
     }
   }
+  
+  return turnNumber;
+}
+
+int turnScore(Turn *turn) {
+    int totalScore = 0;
+    for (int i = 0; i < TURN_SIZE; i++) {
+        totalScore += turn->moves[i].score;
+    }
+    
+    return totalScore;
+}
+
+int getMaxTurnIndex(Turn *turns, int size) {
+    int max = turnScore(&turns[0]);
+    int idx = 0;
+    for (int i = 1; i < size; i++) {
+        int score = turnScore(&turns[i]);
+        if (score > max) {
+            max = score;
+            idx = i;
+        }
+    }
+    
+    return idx;
+}
+
+void removeNewLine(char *string, size_t length) {
+    for (int i = 0; i < length; i++) {
+        if (string[i] == '\n') {
+            string[i] = '\0';
+            return;
+        }
+    }
+}
+
+void printTurn(Turn *turn) {
+    for (int i = 0; i < TURN_SIZE; i++) {
+        Move m = turn->moves[i];
+        printf("Piece: %d, (%d, %d)\n", m.pieceId, m.position.x, m.position.y);
+    }
 }
 
 int main(int argc, char **argv) {
-  prettyPrintPieces(PIECES);
-  int selected, x, y;
-  Board a, b;
-  clearBoard(&a); clearBoard(&b);
+    char *buffer;
+    size_t bufsize = 32;
+    size_t characters;
+
+    buffer = (char *)malloc(bufsize * sizeof(char));
   
-  Point p = {0};
-  placePiece(&a, &b, 0, &p);
-  printBoard(&b);
-  
-  Point positions[100] = {0};
-  int sz = getPiecePlacements(&b, 13, positions);
-  printf("Can place peice 13 in %d positions.\n", sz);
+    printf("To get started, whos score do you want to beat?\n");
+    getline(&buffer, &bufsize, stdin);
+    removeNewLine(buffer, bufsize);
+    printf("Ok! Time to beat %s!\n", buffer);
+    
+    /////////////////////////////////////
+    Board board = {0};
+    Board nextBoard = {0};
+    
+    while (true) {
+        printBoard(&board);
+        prettyPrintPieces(PIECES);
+        
+        printf("Enter 3 piece numbers:\n");
+
+        int pieces[3];
+        scanf("%d %d %d", &pieces[0], &pieces[1], &pieces[2]);
+        Turn turns[20];
+        int nTurns = getPermutations(&board, pieces, turns);
+        int t = getMaxTurnIndex(turns, nTurns);
+        
+        printf(">>>>>>>\n");
+        printTurn(&turns[t]);
+        
+        executeMove(&board, &nextBoard, &(turns[t].moves[0]));
+        executeMove(&nextBoard, &board, &(turns[t].moves[1]));
+        executeMove(&board, &nextBoard, &(turns[t].moves[2]));
+    }
 }

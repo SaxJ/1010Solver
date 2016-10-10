@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -112,10 +114,26 @@ int turnScore(Turn *turn);
 
 /**
  * Updates the array of turns with all possible purmutations of moves that the player could make.
+ * Returns the number of permutations.
  */
-void getPermutations(Board *startBoard, const int *pieces, Turn *turns);
+int getPermutations(Board *startBoard, int *pieces, Turn *turns);
 
 /**
  * Execute a move
  */
 int executeMove( Board *board, Board *nextBoard, Move *move);
+
+/**
+ * Gets the maximum scoring turn.
+ */
+int getMaxTurnIndex(Turn *turns, int size);
+
+/**
+ * Replaces a newline with a terminating character.
+ */
+void removeNewLine(char *string, size_t length);
+
+/**
+ * Prints a turn.
+ */
+ void printTurn(Turn *turn);
