@@ -11,7 +11,8 @@
 
 typedef struct Piece {
     int grid[PIECE_SIZE][PIECE_SIZE];
-    int width, height;
+    int width;
+    int height;
 } Piece;
 
 typedef struct Board {
@@ -101,7 +102,7 @@ int getPiecePlacements(Board *board, int pieceId, Point *positions);
 /**
  * Gets the max scoring placement for a give board and piece.
  */
-void getPiecePlacement(Board *board, int piece, Turn *turn)
+void getPiecePlacement(Board *board, int piece, Move *turn);
 
 /**
  * Returns the score of a turn. The turn score is the sum of the scores of each move in a turn.
@@ -112,4 +113,9 @@ int turnScore(Turn *turn);
 /**
  * Updates the array of turns with all possible purmutations of moves that the player could make.
  */
-void getPermutations(Board *startBoard, Turn *turns);
+void getPermutations(Board *startBoard, const int *pieces, Turn *turns);
+
+/**
+ * Execute a move
+ */
+int executeMove( Board *board, Board *nextBoard, Move *move);

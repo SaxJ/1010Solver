@@ -94,7 +94,7 @@ static const Piece PIECES[16] = {
       {1,0,0,0,0},
       {1,0,0,0,0},
       {1,0,0,0,0},
-      {0,0,0,0,0}
+      {0}
     },
     1,
     4
@@ -103,8 +103,8 @@ static const Piece PIECES[16] = {
   {
     {
       {1,1,1,1,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0},
+      {0},
+      {0},
       {0},
       {0}
     },
@@ -117,8 +117,8 @@ static const Piece PIECES[16] = {
       {1,1,1,0,0},
       {1,0,0,0,0},
       {1,0,0,0,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0}
+      {0},
+      {0}
     },
     3,
     3
@@ -129,8 +129,8 @@ static const Piece PIECES[16] = {
       {0,0,1,0,0},
       {0,0,1,0,0},
       {1,1,1,0,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0}
+      {0},
+      {0}
     },
     3,
     3
@@ -141,8 +141,8 @@ static const Piece PIECES[16] = {
       {1,0,0,0,0},
       {1,0,0,0,0},
       {1,1,1,0,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0}
+      {0},
+      {0}
     },
     3,
     3
@@ -153,8 +153,8 @@ static const Piece PIECES[16] = {
       {1,1,1,0,0},
       {0,0,1,0,0},
       {0,0,1,0,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0}
+      {0},
+      {0}
     },
     3,
     3
@@ -165,8 +165,8 @@ static const Piece PIECES[16] = {
       {1,1,1,0,0},
       {1,1,1,0,0},
       {1,1,1,0,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0}
+      {0},
+      {0}
     },
     3,
     3
@@ -187,10 +187,10 @@ static const Piece PIECES[16] = {
   {
     {
       {1,1,1,1,1},
-      {0,0,0,0,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0},
-      {0,0,0,0,0}
+      {0},
+      {0},
+      {0},
+      {0}
     },
     5,
     1
@@ -362,11 +362,16 @@ void getPiecePlacement(Board *board, int piece, Move *move) {
   move->score = maxScore;
 }
 
-void getPermutations(Board *startBoard, Turn *possibleTurns) {
+int executeMove(Board *board, Board *nextBoard, Move *move) {
+    return placePiece(board, nextBoard, move->pieceId, &(move->position));
+}
+
+void getPermutations(Board *startBoard, const int *pieces, Turn *possibleTurns) {
   int turnNumber = 0;
-  Board board = *startBoard;
+
+  Board board;
   Board nextBoard;
-  
+
   for (int a = 0; a <=2; a++) {
     for (int b = 0; b <= 2; b++) {
       if (a == b) continue;
@@ -374,9 +379,20 @@ void getPermutations(Board *startBoard, Turn *possibleTurns) {
       for (int c = 0; c <= 2; c++) {
         if (c == b || c == a) continue;
         
+        // initialise board back to start state
+        copyBoard(startBoard, &board);
         
+        // execute moves, recording moves to the turn
+        getPiecePlacement(&board, pieces[a], &(possibleTurns[turnNumber].moves[0]));
+        executeMove(&board, &nextBoard, &(possibleTurns[turnNumber].moves[0]));
         
+        getPiecePlacement(&board, pieces[b], &(possibleTurns[turnNumber].moves[1]));
+        executeMove(&nextBoard, &board, &(possibleTurns[turnNumber].moves[1]));
         
+        getPiecePlacement(&board, pieces[c], &(possibleTurns[turnNumber].moves[2]));
+        executeMove(&board, &nextBoard, &(possibleTurns[turnNumber].moves[2]));
+        
+        turnNumber++;
       }
     }
   }
