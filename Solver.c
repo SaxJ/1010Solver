@@ -387,10 +387,10 @@ int getPermutations(Board *startBoard, int *pieces, Turn *possibleTurns) {
         // execute moves, recording moves to the turn
         getPiecePlacement(&board, pieces[a], &(possibleTurns[turnNumber].moves[0]));
         executeMove(&board, &nextBoard, &(possibleTurns[turnNumber].moves[0]));
-        
-        getPiecePlacement(&board, pieces[b], &(possibleTurns[turnNumber].moves[1]));
+
+        getPiecePlacement(&nextBoard, pieces[b], &(possibleTurns[turnNumber].moves[1]));
         executeMove(&nextBoard, &board, &(possibleTurns[turnNumber].moves[1]));
-        
+
         getPiecePlacement(&board, pieces[c], &(possibleTurns[turnNumber].moves[2]));
         executeMove(&board, &nextBoard, &(possibleTurns[turnNumber].moves[2]));
         
@@ -473,7 +473,13 @@ int main(int argc, char **argv) {
         printTurn(&turns[t]);
         
         executeMove(&board, &nextBoard, &(turns[t].moves[0]));
+        // printBoard(&nextBoard);
+        
         executeMove(&nextBoard, &board, &(turns[t].moves[1]));
+        // printBoard(&board);
+
         executeMove(&board, &nextBoard, &(turns[t].moves[2]));
+        // printBoard(&nextBoard);
+
     }
 }
