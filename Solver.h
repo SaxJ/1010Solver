@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define PIECE_SIZE 5
-#define NUM_PIECES 16
+#define NUM_PIECES 17
 #define ROW_WIDTH 3
 #define BOARD_SIZE 10
 #define TURN_SIZE 3

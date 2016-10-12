@@ -3,7 +3,19 @@
 /*
 A list of possible pieces.
 */
-static const Piece PIECES[16] = {
+static const Piece PIECES[17] = {
+  {
+    {
+      {1,0,0,0,0},
+      {0},
+      {0},
+      {0},
+      {0}
+    },
+    1,
+    1
+  },
+  
   {
     {
       {1,1,0,0,0},
@@ -458,6 +470,7 @@ int main(int argc, char **argv) {
     Board nextBoard = {0};
     
     while (true) {
+        copyBoard(&nextBoard, &board);
         printBoard(&board);
         prettyPrintPieces(PIECES);
         
