@@ -334,7 +334,7 @@ int getPiecePlacements(Board *board, int pieceId, Point *positions) {
             
             for (int w = 0; w < piece.width && !invalid; w++) {
                 for (int h = 0; h < piece.height; h++) {
-                    if (board->grid[x + w][y + h] > 0) {
+                    if (board->grid[x + w][y + h] > 0 && piece.grid[w][h] > 0) {
                         invalid = true;
                         break;
                     }
@@ -354,12 +354,12 @@ int getPiecePlacements(Board *board, int pieceId, Point *positions) {
 
 void getPiecePlacement(Board *board, int piece, Move *move) {
   Point positions[100];
-  Board next;
   int maxScore = 0;
   int bestPos = 0;
   int nPositions = getPiecePlacements(board, piece, positions);
   
   for (int i = 0; i < nPositions; i++) {
+    Board next;
     int ret = placePiece(board, &next, piece, &positions[i]);
     if (ret < 0) continue;
     
