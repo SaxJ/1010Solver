@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define PIECE_SIZE 5
-#define NUM_PIECES 17
+#define NUM_PIECES 19
 #define ROW_WIDTH 3
 #define BOARD_SIZE 10
 #define TURN_SIZE 3
@@ -137,3 +137,8 @@ void removeNewLine(char *string, size_t length);
  * Prints a turn.
  */
  void printTurn(Turn *turn);
+ 
+ /**
+  * Clears completed rows and columns
+  */
+void clearCompleted(Board *board);
