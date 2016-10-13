@@ -376,8 +376,50 @@ void getPiecePlacement(Board *board, int piece, Move *move) {
   move->score = maxScore;
 }
 
+void clearX(Board *board, int x) {
+    for (int y = 0; y < BOARD_SIZE; y++) {
+        board->grid[x][y] = 0;
+    }
+}
+
+void clearY(Board *board, int y) {
+    for (int x = 0; x < BOARD_SIZE; x++) {
+        board->grid[x][y] = 0;
+    }
+}
+
+void clearCompleted(Board *board) {
+    for (int x = 0; x < BOARD_SIZE; x++) {
+        bool full = true;
+        for (int y = 0; y < BOARD_SIZE; y++) {
+            if (board->grid[x][y] == 0) {
+                full = false;
+                break;
+            }
+        }
+        
+        if (full) clearX(board, x);
+    }
+    
+    for (int y = 0; y < BOARD_SIZE; y++) {
+        bool full = true;
+        for (int x = 0; x < BOARD_SIZE; x++) {
+            if (board->grid[x][y] == 0) {
+                full = false;
+                break;
+            }
+        }
+        
+        if (full) clearY(board, y);
+    }
+}
+
 int executeMove(Board *board, Board *nextBoard, Move *move) {
-    return placePiece(board, nextBoard, move->pieceId, &(move->position));
+    int response = placePiece(board, nextBoard, move->pieceId, &(move->position));
+    if (response < 0)
+        return response;
+    
+    clearCompleted(nextBoard);
 }
 
 int getPermutations(Board *startBoard, int *pieces, Turn *possibleTurns) {
