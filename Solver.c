@@ -381,9 +381,10 @@ void getPiecePlacement(Board *board, int piece, Move *move) {
   int maxScore = 0;
   int bestPos = 0;
   int nPositions = getPiecePlacements(board, piece, positions);
+  Board next;
   
   for (int i = 0; i < nPositions; i++) {
-    Board next;
+    clearBoard(&next);
     int ret = placePiece(board, &next, piece, &positions[i]);
     if (ret < 0) continue;
     
