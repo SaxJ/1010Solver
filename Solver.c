@@ -283,6 +283,35 @@ int placePiece(Board *board, Board *nextBoard, int pieceNumber, Point *pos) {
     return 0;
 }
 
+void cleanRows(Board *board, Board *nextBoard) {
+    copyBoard(board, nextBoard);
+    // clear columns
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        int count = 0;
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board->grid[i][j] > 0) count++;
+        }
+        if (count == BOARD_SIZE) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                nextBoard->grid[i][j] = 0;
+            }
+        }
+    }
+
+    // clear rows
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        int count = 0;
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board->grid[j][i] > 0) count++;
+        }
+        if (count == BOARD_SIZE) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                nextBoard->grid[j][i] = 0;
+            }
+        }
+    }
+}
+
 void printBoard(Board *board) {
     for (int y = 0; y < BOARD_SIZE; y++) {
         for (int x = 0; x < BOARD_SIZE; x++) {
@@ -474,7 +503,6 @@ int main(int argc, char **argv) {
     Board nextBoard = {0};
     
     while (true) {
-        copyBoard(&nextBoard, &board);
         printBoard(&board);
         prettyPrintPieces(PIECES);
         
@@ -494,6 +522,8 @@ int main(int argc, char **argv) {
         executeMove(&nextBoard, &board, &(turns[t].moves[1]));
 
         executeMove(&board, &nextBoard, &(turns[t].moves[2]));
+
+        cleanRows(&nextBoard, &board);
 
     }
 }
