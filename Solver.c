@@ -524,6 +524,5 @@ int main(int argc, char **argv) {
         executeMove(&board, &nextBoard, &(turns[t].moves[2]));
 
         cleanRows(&nextBoard, &board);
-
     }
 }
