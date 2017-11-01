@@ -328,12 +328,16 @@ int getPiecePlacements(Board *board, int pieceId, Point *positions) {
     Piece piece = PIECES[pieceId];
     int numPositions = 0;
 
-    for (int x = 0; x < BOARD_SIZE - piece.width; x++) {
-        for (int y = 0; y < BOARD_SIZE - piece.height; y++) {
+    for (int x = 0; x < BOARD_SIZE; x++) {
+        for (int y = 0; y < BOARD_SIZE; y++) {
             bool invalid = false;
             
             for (int w = 0; w < piece.width && !invalid; w++) {
                 for (int h = 0; h < piece.height; h++) {
+                    if (((x + w) >= BOARD_SIZE || (y + h) >= BOARD_SIZE) && piece.grid[w][h] > 0) {
+                        invalid = true;
+                        break;
+                    }
                     if (board->grid[x + w][y + h] > 0 && piece.grid[w][h] > 0) {
                         invalid = true;
                         break;
@@ -486,13 +490,10 @@ int main(int argc, char **argv) {
         printTurn(&turns[t]);
         
         executeMove(&board, &nextBoard, &(turns[t].moves[0]));
-        // printBoard(&nextBoard);
         
         executeMove(&nextBoard, &board, &(turns[t].moves[1]));
-        // printBoard(&board);
 
         executeMove(&board, &nextBoard, &(turns[t].moves[2]));
-        // printBoard(&nextBoard);
 
     }
 }
