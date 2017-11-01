@@ -137,8 +137,8 @@ void removeNewLine(char *string, size_t length);
  * Prints a turn.
  */
  void printTurn(Turn *turn);
- 
+
  /**
-  * Clears completed rows and columns
+  * Clears completed rows.
   */
-void clearCompleted(Board *board);
+ void cleanRows(Board *board, Board *nextBoard);

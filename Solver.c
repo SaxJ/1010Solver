@@ -3,7 +3,7 @@
 /*
 A list of possible pieces.
 */
-static const Piece PIECES[NUM_PIECES] = {
+static const Piece PIECES[19] = {
   {
     {
       {1,0,0,0,0},
@@ -14,6 +14,30 @@ static const Piece PIECES[NUM_PIECES] = {
     },
     1,
     1
+  },
+
+  {
+    {
+      {1,1,0,0,0},
+      {0,0,0,0,0},
+      {0},
+      {0},
+      {0}
+    },
+    2,
+    1
+  },
+
+  {
+    {
+      {1,0,0,0,0},
+      {1,0,0,0,0},
+      {0},
+      {0},
+      {0}
+    },
+    1,
+    2
   },
   
   {
@@ -307,6 +331,35 @@ int placePiece(Board *board, Board *nextBoard, int pieceNumber, Point *pos) {
     return 0;
 }
 
+void cleanRows(Board *board, Board *nextBoard) {
+    copyBoard(board, nextBoard);
+    // clear columns
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        int count = 0;
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board->grid[i][j] > 0) count++;
+        }
+        if (count == BOARD_SIZE) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                nextBoard->grid[i][j] = 0;
+            }
+        }
+    }
+
+    // clear rows
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        int count = 0;
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board->grid[j][i] > 0) count++;
+        }
+        if (count == BOARD_SIZE) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                nextBoard->grid[j][i] = 0;
+            }
+        }
+    }
+}
+
 void printBoard(Board *board) {
     for (int y = 0; y < BOARD_SIZE; y++) {
         for (int x = 0; x < BOARD_SIZE; x++) {
@@ -352,12 +405,16 @@ int getPiecePlacements(Board *board, int pieceId, Point *positions) {
     Piece piece = PIECES[pieceId];
     int numPositions = 0;
 
-    for (int x = 0; x < BOARD_SIZE - piece.width; x++) {
-        for (int y = 0; y < BOARD_SIZE - piece.height; y++) {
+    for (int x = 0; x < BOARD_SIZE; x++) {
+        for (int y = 0; y < BOARD_SIZE; y++) {
             bool invalid = false;
             
             for (int w = 0; w < piece.width && !invalid; w++) {
                 for (int h = 0; h < piece.height; h++) {
+                    if (((x + w) >= BOARD_SIZE || (y + h) >= BOARD_SIZE) && piece.grid[w][h] > 0) {
+                        invalid = true;
+                        break;
+                    }
                     if (board->grid[x + w][y + h] > 0 && piece.grid[w][h] > 0) {
                         invalid = true;
                         break;
@@ -537,7 +594,6 @@ int main(int argc, char **argv) {
     Board nextBoard = {0};
     
     while (true) {
-        copyBoard(&nextBoard, &board);
         printBoard(&board);
         prettyPrintPieces(PIECES);
         
@@ -553,13 +609,11 @@ int main(int argc, char **argv) {
         printTurn(&turns[t]);
         
         executeMove(&board, &nextBoard, &(turns[t].moves[0]));
-        // printBoard(&nextBoard);
         
         executeMove(&nextBoard, &board, &(turns[t].moves[1]));
-        // printBoard(&board);
 
         executeMove(&board, &nextBoard, &(turns[t].moves[2]));
-        // printBoard(&nextBoard);
 
+        cleanRows(&nextBoard, &board);
     }
 }
